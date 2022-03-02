@@ -5,7 +5,7 @@ package com.company;
 
 import java.util.Random;
 
-public class Main {
+public class Homework1 {
 
     public static void main(String[] args) {
         // 1. Read input and usage check.
