@@ -13,7 +13,7 @@ public class SaveCommand {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-            objectMapper.writeValue(new File(path), catalog);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), catalog);
         } catch (StreamWriteException ex) {
             ex.printStackTrace();
         }

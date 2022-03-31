@@ -1,14 +1,15 @@
 package mainPackage;
 
+import Exceptions.ReportException;
+import Exceptions.ViewException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
-import java.net.URISyntaxException;
 
 public class ReportCommand {
-    public static void report(Catalog catalog) throws ReportException{
+    public static void report(Catalog catalog) throws ReportException {
         Configuration configuration = new Configuration();
         try {
             configuration.setDirectoryForTemplateLoading(new File("/home/andrei/Work/Lab5/src/main/resources"));

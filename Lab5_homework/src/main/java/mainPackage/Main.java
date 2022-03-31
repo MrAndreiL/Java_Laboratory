@@ -1,5 +1,10 @@
 package mainPackage;
 
+import Exceptions.InfoException;
+import Exceptions.InvalidCatalogExpression;
+import Exceptions.ReportException;
+import Exceptions.ViewException;
+
 import java.io.IOException;
 
 public class Main {
@@ -37,6 +42,12 @@ public class Main {
         try {
             ReportCommand.report(catalog);
         } catch (ReportException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            InfoCommand.info();
+        } catch (IOException | InfoException ex) {
             ex.printStackTrace();
         }
     }

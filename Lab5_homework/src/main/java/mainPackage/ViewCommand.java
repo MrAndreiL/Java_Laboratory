@@ -1,5 +1,7 @@
 package mainPackage;
 
+import Exceptions.ViewException;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
