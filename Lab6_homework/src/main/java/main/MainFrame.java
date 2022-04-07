@@ -2,11 +2,13 @@ package main;
 
 import config.Config;
 
+import javax.naming.ldap.Control;
 import javax.swing.*;
 
 import static java.awt.BorderLayout.*;
 
 public class MainFrame extends JFrame {
+    ControlPanel controlPanel;
     public MainFrame() {
         super("My game");
         init();
@@ -28,8 +30,15 @@ public class MainFrame extends JFrame {
     }
 
     public void addControlPanel() {
-        ControlPanel controlPanel = new ControlPanel(this);
+        controlPanel = new ControlPanel(this);
         add(controlPanel, SOUTH);
+        pack();
+    }
+
+    public void addEndPanel(int player) {
+        EndPanel end = new EndPanel(this, player);
+        remove(controlPanel);
+        add(end, SOUTH);
         pack();
     }
 }

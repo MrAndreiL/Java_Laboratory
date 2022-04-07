@@ -86,8 +86,19 @@ public class DrawingPanel extends JPanel {
             if (circle.getColor() != config.DEF)
                 nr++;
         }
-        if (nr == currentCircle.getNeighbors().size())
-            frame.dispose();
+        if (nr == currentCircle.getNeighbors().size()) {
+            // Display the end screen with the winning player.
+            frame.addEndPanel(game.getTurn());
+        }
+    }
+
+    private Circle isValid(MouseEvent e, Circle currentCircle) {
+        Circle newCircle = isValidPress(e);
+        if (newCircle == null)
+            return null;
+        if (currentCircle.isNeighbor(newCircle) && !currentCircle.equals(newCircle))
+            return newCircle;
+        return null;
     }
 
     final void init() {
@@ -95,25 +106,31 @@ public class DrawingPanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                currentCircle = isValidPress(e);
-                if (currentCircle != null) {
                     if (game.getTurn() == 1) { // Game start
-                        paintBlue(currentCircle.getX(), currentCircle.getY(), config.getCircleRadius());
-                        currentCircle.setColor(config.BLUE);
-                        game.setTurn(2);
-                    } else { // take turns
-                        if (game.getTurn() % 2 == 0) {
-                            paintRed(currentCircle.getX(), currentCircle.getY(), config.getCircleRadius());
-                            currentCircle.setColor(config.RED);
-                        } else {
+                        currentCircle = isValidPress(e);
+                        if (currentCircle != null) {
                             paintBlue(currentCircle.getX(), currentCircle.getY(), config.getCircleRadius());
                             currentCircle.setColor(config.BLUE);
+                            game.setTurn(2);
                         }
-                        game.setTurn(game.getTurn() + 1);
+                    } else { // take turns
+                        Circle prevCircle = currentCircle;
+                        currentCircle = isValid(e, currentCircle);
+                        if (currentCircle != null) {
+                            if (game.getTurn() % 2 == 0) {
+                                paintRed(currentCircle.getX(), currentCircle.getY(), config.getCircleRadius());
+                                currentCircle.setColor(config.RED);
+                            } else {
+                                paintBlue(currentCircle.getX(), currentCircle.getY(), config.getCircleRadius());
+                                currentCircle.setColor(config.BLUE);
+                            }
+                            isGameOver(currentCircle);
+                            game.setTurn(game.getTurn() + 1);
+                        } else {
+                            currentCircle = prevCircle;
+                        }
                     }
-                    isGameOver(currentCircle);
                 }
-            }
         });
         /* Randomly placing the sticks */
         config.setSticks();
