@@ -8,6 +8,11 @@ public class Player implements Runnable {
     private Game game;
     private int extNumber;
     private List<Tile> extractedAux = null;
+    private boolean isActive = true;
+
+    public void deactivate() {
+        isActive = false;
+    }
 
     public Player(String name, Game game) {
         this.name = name;
@@ -78,7 +83,7 @@ public class Player implements Runnable {
     }
 
     private boolean submitWord() {
-        List<Tile> extracted = game.getBag().extractTile(extNumber);
+        List<Tile> extracted = game.getBag().extractTile(extNumber, this);
         if (extracted.isEmpty()) {
             return false;
         }
@@ -101,7 +106,7 @@ public class Player implements Runnable {
         } else if (game.getDictionary().getDict().size() > 7) {
             // put the tiles back in the bag.
             for (Tile tile : extracted) {
-                game.getBag().addTile(tile, 1);
+                game.getBag().addTile(tile, 1, this);
             }
         }
 
@@ -110,13 +115,14 @@ public class Player implements Runnable {
             Thread.sleep(50);
         } catch (InterruptedException ex) {
             System.out.println("Thread stopped!");
+            deactivate();
         }
         return true;
     }
 
     @Override
     public void run() {
-        while (submitWord()) {
+        while (submitWord() && isActive) {
 
         }
     }

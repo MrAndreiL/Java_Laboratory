@@ -16,6 +16,7 @@ public class Board {
                 wait();
             } catch (InterruptedException ex) {
                 System.out.println("Thread stopped!");
+                player.deactivate();
             }
         }
         addAvailable = false;

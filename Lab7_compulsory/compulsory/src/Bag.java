@@ -21,12 +21,13 @@ public class Bag {
         readTiles();
     }
 
-    public synchronized void addTile(Tile tile, int number) {
+    public synchronized void addTile(Tile tile, int number, Player player) {
         while (!tileAvailable) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 System.out.println("Thread Stopped!");
+                player.deactivate();
             }
         }
         tileAvailable = false;
@@ -48,7 +49,7 @@ public class Bag {
                 String[] splitLine = line.split(" ");
                 Tile tile = new Tile(splitLine[0].charAt(0), Integer.parseInt(splitLine[2]));
 
-                addTile(tile, Integer.parseInt(splitLine[1]));
+                addTile(tile, Integer.parseInt(splitLine[1]), null);
                 line = read.readLine();
             }
         } catch (IOException ex) {
@@ -62,13 +63,14 @@ public class Bag {
         }
     }
 
-    public synchronized List<Tile> extractTile(int howMany) {
+    public synchronized List<Tile> extractTile(int howMany, Player player) {
         List<Tile> extracted = new ArrayList<>();
         while (!extractAvailable) {
             try {
                 wait();
             } catch (InterruptedException ex) {
                 System.out.println("Thread stopped!");
+                player.deactivate();
             }
         }
         extractAvailable = false;

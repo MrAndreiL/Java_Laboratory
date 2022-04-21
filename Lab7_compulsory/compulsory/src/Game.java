@@ -34,7 +34,7 @@ public class Game {
 
     public void stop() {
         for (Thread t : players.values()) {
-            t.stop();
+            t.interrupt();
         }
     }
 
