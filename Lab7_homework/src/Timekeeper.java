@@ -9,7 +9,7 @@ public class Timekeeper implements Runnable {
 
     @Override
     public void run() {
-        int timeLimit = 60;
+        int timeLimit = 30;
         while (timeLimit > 0) {
             Instant start = Instant.now();
             try {
