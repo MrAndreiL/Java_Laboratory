@@ -1,8 +1,17 @@
 package com.example;
 
 import java.sql.SQLException;
-
+import java.util.List;
 import java.lang.Math;
+
+import javax.swing.*;
+
+import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.*;
+
+import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) {
@@ -19,18 +28,41 @@ public class App {
             double sLong = city.getLongitude();
             double sLat = city.getLatitude();
 
-            // 2. Iterate through the rest of the db and display the distance.
+            // 2. Display map.
+            File file = new File("E:\\map.png");
+            BufferedImage img = ImageIO.read(file);
+            ImageIcon imageIcon = new ImageIcon(img);
+            JFrame jFrame = new JFrame();
+
+            jFrame.setLayout(new FlowLayout());
+
+            jFrame.setSize(1280, 888);
+            JLabel jLabel = new JLabel();
+
+            jLabel.setIcon(imageIcon);
+            jFrame.add(jLabel);
+
+            // 3. Iterate through the rest of the db and display the distance.
+            List<City> cityList = new ArrayList<>();
+            cityList.add(city);
             for (int i = 2; i <= 200; i++) {
                 city.setId(i);
                 city = cities.findById(city);
+                cityList.add(city);
                 double fLong = city.getLongitude();
                 double fLat = city.getLatitude();
                 distance(sLat, fLat, sLong, fLong);
             }
 
-            // 3. Close connection to the DB.
+            // 4. Send the cities to be drawn to the DrawingPanel.
+            DrawingPanel canvas = new DrawingPanel(jFrame, cityList);
+            jFrame.add(canvas);
+            jFrame.pack();
+            jFrame.setVisible(true);
+            jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            // 4. Close connection to the DB.
             Database.getConnection().close();
-        } catch (SQLException ex) {
+        } catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }
     }
