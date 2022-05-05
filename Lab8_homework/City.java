@@ -3,7 +3,7 @@ package com.example;
 public class City extends Administrative {
 
     /* Model the city database table */
-    private final int id;
+    private int id;
     private final String country;
     private final String capital;
     private final double longitude;
@@ -16,6 +16,10 @@ public class City extends Administrative {
         this.longitude = longitude;
         this.latitude = latitude;
         this.country = country;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
