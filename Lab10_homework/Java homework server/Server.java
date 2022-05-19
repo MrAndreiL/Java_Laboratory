@@ -227,4 +227,8 @@ public class Server {
             messages.get(friend).add(message);
         }
     }
+
+    public static synchronized List<String> getMessages(String name) {
+        return messages.get(name);
+    }
 }

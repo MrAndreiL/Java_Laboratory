@@ -101,7 +101,8 @@ public class Response extends Thread {
                     // Concatenate message.
                     String message = "";
                     for (int i = 1; i < content.length; i++) {
-                        message.concat(content[i]);
+                        message += content[i];
+                        message += " ";
                     }
 
                     // Create send object to distribute to friends.
@@ -109,6 +110,17 @@ public class Response extends Thread {
                     if (name != null) {
                         Send send = new Send();
                         send.resolve(name, message, out);
+                    }
+                }
+
+                if (content[0].equals("read")) {
+                    Read read = new Read();
+
+                    String name = Server.isActiveUser(incomingIp, incomingPort);
+                    if (name != null) {
+                        read.resolve(name, out);
+                    } else {
+                        out.println("Sorry, you are not logged in");
                     }
                 }
             } catch (IOException ex) {
